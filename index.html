@@ -1,0 +1,1358 @@
+<!doctype html>
+<html lang="sr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Admiral — Klipuj & Rangiraj (GLC)</title>
+    <style>
+      :root {
+        /* Admiral palette (blue / yellow / white) */
+        --blue: #0a3d91;
+        --blue2: #072e6d;
+        --yellow: #ffd200;
+        --white: #ffffff;
+
+        /* clean neutrals */
+        --bg: #f6f8fc;
+        --card: #ffffff;
+        --border: #e6ebf5;
+        --text: #0b1020;
+        --muted: #5a6b8a;
+
+        --radius: 16px;
+        --radius2: 22px;
+        --max: 1100px;
+        --shadow: 0 14px 40px rgba(10, 61, 145, 0.1);
+        --shadow2: 0 10px 24px rgba(11, 16, 32, 0.06);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        font-family:
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          Segoe UI,
+          Roboto,
+          Helvetica,
+          Arial;
+        color: var(--text);
+        background:
+          radial-gradient(
+            900px 450px at 15% 10%,
+            rgba(10, 61, 145, 0.1),
+            transparent 60%
+          ),
+          radial-gradient(
+            900px 450px at 85% 10%,
+            rgba(255, 210, 0, 0.14),
+            transparent 55%
+          ),
+          linear-gradient(180deg, var(--bg), #ffffff);
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      .wrap {
+        max-width: var(--max);
+        margin: 0 auto;
+        padding: 0 18px;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 10px 12px;
+        border-radius: 14px;
+        border: 1px solid var(--border);
+        background: #fff;
+        color: var(--text);
+        font-size: 13px;
+        box-shadow: var(--shadow2);
+        transition: 0.15s ease;
+        cursor: pointer;
+        user-select: none;
+        white-space: nowrap;
+      }
+      .btn:hover {
+        transform: translateY(-1px);
+      }
+      .btn.primary {
+        border-color: rgba(10, 61, 145, 0.2);
+        background: linear-gradient(180deg, #ffffff 0%, #f5f9ff 100%);
+        box-shadow: 0 14px 30px rgba(10, 61, 145, 0.12);
+      }
+      .btn.primary .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 99px;
+        background: var(--yellow);
+        box-shadow: 0 0 0 4px rgba(255, 210, 0, 0.22);
+      }
+      .btn svg {
+        width: 16px;
+        height: 16px;
+        color: var(--blue);
+      }
+
+      /* Hero */
+      .hero {
+        padding: 26px 0 10px;
+      }
+      .heroGrid {
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 14px;
+        align-items: stretch;
+      }
+      @media (max-width: 920px) {
+        .heroGrid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .panel {
+        border: 1px solid var(--border);
+        background: var(--card);
+        border-radius: var(--radius2);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+      .pad {
+        padding: 18px;
+      }
+
+      .heroVisual {
+        min-height: 320px;
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 0;
+      }
+      @media (max-width: 920px) {
+        .heroVisual {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .heroLeft {
+        padding: 22px 22px 18px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .heroLeft h1 {
+        margin: 0;
+        font-size: 40px;
+        line-height: 1.06;
+        letter-spacing: -0.6px;
+      }
+      .heroLeft p {
+        margin: 12px 0 0;
+        color: var(--muted);
+        font-size: 15px;
+        max-width: 62ch;
+      }
+      .heroCTAs {
+        margin-top: 16px;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .heroRight {
+        border-left: 1px solid var(--border);
+        background:
+          radial-gradient(
+            800px 400px at 40% 25%,
+            rgba(10, 61, 145, 0.14),
+            transparent 60%
+          ),
+          radial-gradient(
+            800px 400px at 70% 65%,
+            rgba(255, 210, 0, 0.2),
+            transparent 60%
+          ),
+          linear-gradient(180deg, #ffffff 0%, #f8faff 100%);
+        padding: 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      @media (max-width: 920px) {
+        .heroRight {
+          border-left: 0;
+          border-top: 1px solid var(--border);
+        }
+      }
+
+      .glcCard {
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 14px;
+        background: #fff;
+        box-shadow: var(--shadow2);
+      }
+      .glcCard h3 {
+        margin: 0 0 6px;
+        font-size: 14px;
+        color: var(--blue);
+      }
+      .glcCard .meta {
+        display: grid;
+        gap: 8px;
+        margin-top: 10px;
+      }
+      .metaRow {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        font-size: 13px;
+        padding: 10px 10px;
+        border-radius: 12px;
+        background: #f6f9ff;
+        border: 1px solid #e7eeff;
+      }
+      .metaRow b {
+        color: var(--text);
+      }
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 10px;
+        border-radius: 999px;
+        border: 1px solid #e7eeff;
+        background: #f6f9ff;
+        color: var(--muted);
+        font-size: 12px;
+        width: max-content;
+      }
+      .pill i {
+        width: 10px;
+        height: 10px;
+        border-radius: 99px;
+        background: var(--yellow);
+        box-shadow: 0 0 0 4px rgba(255, 210, 0, 0.2);
+        display: inline-block;
+      }
+
+      .miniGrid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      .mini {
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 12px;
+        background: #fff;
+        box-shadow: var(--shadow2);
+      }
+      .mini small {
+        display: block;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .mini b {
+        display: block;
+        margin-top: 4px;
+        font-size: 16px;
+        color: var(--blue);
+      }
+
+      /* Sections */
+      section {
+        padding: 16px 0;
+      }
+      .h2 {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 12px;
+        margin: 0 0 12px;
+      }
+      .h2 h2 {
+        margin: 0;
+        font-size: 18px;
+        letter-spacing: -0.2px;
+      }
+      .h2 span {
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .grid3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+      }
+      @media (max-width: 920px) {
+        .grid3 {
+          grid-template-columns: 1fr;
+        }
+        .miniGrid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      @media (max-width: 520px) {
+        .miniGrid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .card {
+        border: 1px solid var(--border);
+        background: var(--card);
+        border-radius: var(--radius2);
+        padding: 16px;
+        box-shadow: var(--shadow2);
+      }
+      .card h3 {
+        margin: 0 0 8px;
+        font-size: 15px;
+      }
+      .card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.55;
+      }
+
+      .stepNum {
+        width: 34px;
+        height: 34px;
+        border-radius: 14px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: #f6f9ff;
+        border: 1px solid #e7eeff;
+        color: var(--blue);
+        font-weight: 700;
+        margin-bottom: 10px;
+      }
+
+      .twoCol {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        align-items: start;
+      }
+      @media (max-width: 920px) {
+        .twoCol {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* Image blocks */
+      .imgBlock {
+        border: 1px solid var(--border);
+        border-radius: var(--radius2);
+        overflow: hidden;
+        background: #fff;
+        box-shadow: var(--shadow2);
+      }
+      .imgBlock img {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+      .imgCap {
+        padding: 12px 14px;
+        border-top: 1px solid var(--border);
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      /* Checklist */
+      .checklist {
+        display: grid;
+        gap: 8px;
+        margin-top: 10px;
+      }
+      .check {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+        padding: 10px 12px;
+        border-radius: 14px;
+        border: 1px solid #e7eeff;
+        background: #f6f9ff;
+        font-size: 13px;
+        color: var(--text);
+      }
+      .check svg {
+        min-width: 18px;
+        margin-top: 1px;
+        color: var(--blue);
+      }
+
+      /* Tiers (accordion) */
+      .tiers {
+        display: grid;
+        gap: 10px;
+      }
+      .tier {
+        border: 1px solid var(--border);
+        background: var(--card);
+        border-radius: var(--radius2);
+        overflow: hidden;
+        box-shadow: var(--shadow2);
+      }
+      .tierHead {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 24px;
+        cursor: pointer;
+        user-select: none;
+        gap: 12px;
+      }
+      .tierHead:hover {
+        background: #f6f9ff;
+      }
+      .tierHeadLeft {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        flex: 1;
+      }
+      .badge {
+        padding: 10px 14px;
+        border-radius: 999px;
+        border: 1px solid rgba(10, 61, 145, 0.18);
+        background: #f6f9ff;
+        color: var(--blue);
+        font-size: 14px;
+        white-space: nowrap;
+        font-weight: 700;
+      }
+      .tierInfo {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .tierTitle {
+        font-weight: 700;
+        font-size: 28px;
+        color: var(--blue);
+      }
+      .tierMeta {
+        font-size: 14px;
+        color: var(--muted);
+      }
+      .caret {
+        opacity: 0.7;
+        color: var(--muted);
+        font-size: 20px;
+        transition: transform 0.2s ease;
+      }
+      .tier.open .caret {
+        transform: rotate(180deg);
+      }
+      .tierContent {
+        display: none;
+        grid-template-columns: 1.2fr 1fr;
+        gap: 0;
+        border-top: 1px solid var(--border);
+      }
+      .tier.open .tierContent {
+        display: grid;
+      }
+      @media (max-width: 920px) {
+        .tierContent {
+          grid-template-columns: 1fr;
+        }
+        .tierHeadLeft {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+      }
+      .tierLeft {
+        padding: 24px;
+      }
+      .tierBody {
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.6;
+      }
+      .tierBody ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      .tierBody li {
+        font-size: x-large;
+        padding: 15px 0;
+        border-bottom: 1px solid var(--border);
+        color: black;
+      }
+      .tierBody li:last-child {
+        border-bottom: 0;
+      }
+
+      .tierRight {
+        border-left: 1px solid var(--border);
+        background: #f8faff;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      @media (max-width: 920px) {
+        .tierRight {
+          border-left: 0;
+          border-top: 1px solid var(--border);
+        }
+      }
+      .tierRight img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 12px;
+      }
+
+      /* Rankings */
+      .filters {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .select {
+        border: 1px solid var(--border);
+        background: #fff;
+        color: var(--text);
+        padding: 10px 12px;
+        border-radius: 14px;
+        font-size: 13px;
+        outline: none;
+        box-shadow: var(--shadow2);
+      }
+      table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        overflow: hidden;
+        border-radius: var(--radius2);
+        border: 1px solid var(--border);
+        background: #fff;
+        box-shadow: var(--shadow2);
+      }
+      th,
+      td {
+        text-align: left;
+        padding: 12px 12px;
+        border-bottom: 1px solid var(--border);
+        font-size: 16px;
+        font-weight: 700;
+      }
+      th {
+        color: var(--muted);
+        font-weight: 600;
+        background: #fafbff;
+      }
+      td {
+        color: var(--text);
+      }
+      tr:last-child td {
+        border-bottom: 0;
+      }
+      .rank {
+        color: var(--blue);
+        font-weight: 800;
+      }
+      .tierPill {
+        display: inline-flex;
+        padding: 6px 10px;
+        border-radius: 999px;
+        border: 1px solid #e7eeff;
+        background: #f6f9ff;
+        color: var(--blue);
+        font-size: 12px;
+        font-weight: 600;
+      }
+      .likes {
+        font-variant-numeric: tabular-nums;
+        color: var(--text);
+        font-weight: 700;
+      }
+
+      /* Media pack popup */
+      .mediaBlock {
+        border: 1px solid var(--border);
+        background: var(--card);
+        border-radius: var(--radius2);
+        padding: 24px;
+        box-shadow: var(--shadow2);
+        text-align: center;
+      }
+      .mediaBlock h3 {
+        margin: 0 0 10px;
+        font-size: 20px;
+        color: var(--blue);
+      }
+      .mediaBlock p {
+        margin: 0 0 20px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      /* Modal */
+      .modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 9999;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+      .modal.active {
+        display: flex;
+      }
+      .modalContent {
+        background: #fff;
+        border-radius: var(--radius2);
+        max-width: 600px;
+        width: 100%;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        position: relative;
+      }
+      .modalHeader {
+        padding: 20px 24px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .modalHeader h3 {
+        margin: 0;
+        font-size: 18px;
+        color: var(--blue);
+      }
+      .closeBtn {
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        color: var(--muted);
+        padding: 0;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+      }
+      .closeBtn:hover {
+        background: #f6f9ff;
+      }
+      .modalBody {
+        padding: 24px;
+      }
+      .download {
+        display: grid;
+        gap: 12px;
+      }
+      .dl {
+        border: 1px solid var(--border);
+        background: #fff;
+        border-radius: var(--radius);
+        padding: 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        box-shadow: var(--shadow2);
+      }
+      .dl b {
+        display: block;
+        font-size: 14px;
+      }
+      .dl small {
+        display: block;
+        color: var(--muted);
+        margin-top: 4px;
+        font-size: 12px;
+      }
+
+      /* FAQ */
+      .faq {
+        display: grid;
+        gap: 10px;
+      }
+      details {
+        border: 1px solid var(--border);
+        background: #fff;
+        border-radius: var(--radius2);
+        padding: 12px 14px;
+        box-shadow: var(--shadow2);
+      }
+      summary {
+        cursor: pointer;
+        list-style: none;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        font-weight: 700;
+        font-size: 13px;
+        color: var(--blue);
+      }
+      details p {
+        margin: 10px 0 0;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.6;
+      }
+      summary::-webkit-details-marker {
+        display: none;
+      }
+
+      /* helper */
+      .muted {
+        color: var(--muted);
+      }
+    </style>
+  </head>
+
+  <body>
+    <main class="wrap">
+      <!-- HERO -->
+      <div class="hero" id="top">
+        <div class="panel heroVisual">
+          <div class="heroLeft">
+            <h1>Klipuj. Objavi. Rangiraj se.</h1>
+            <p>
+              Učestvuj tako što edituješ zvanične klipove (GLC), objaviš ih na
+              svom profilu i uđeš u rang listu po broju lajkova.
+            </p>
+
+            <div class="heroCTAs">
+              <a class="btn primary" href="#mediapack">
+                <span class="dot" aria-hidden="true"></span>
+                Preuzmi media pack
+              </a>
+              <a class="btn" href="#pravila">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                  />
+                  <path d="M14 2v6h6" />
+                </svg>
+                Uslovi učešća
+              </a>
+              <a class="btn" href="#rang">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M4 19h16" />
+                  <path d="M4 15h10" />
+                  <path d="M4 11h16" />
+                  <path d="M4 7h10" />
+                </svg>
+                Pogledaj rang listu
+              </a>
+            </div>
+
+            <div
+              style="
+                margin-top: 14px;
+                display: flex;
+                gap: 10px;
+                flex-wrap: wrap;
+              "
+            >
+              <span class="pill"><i></i> Rangiranje: lajkovi</span>
+              <span class="pill"><i></i> Tie-break: komentari</span>
+              <span class="pill"><i></i> Verifikacija: insight</span>
+            </div>
+          </div>
+
+          <div class="heroRight">
+            <div class="glcCard">
+              <h3>GLC ciklus</h3>
+              <div class="meta">
+                <div class="metaRow">
+                  <span class="muted">Početak</span>
+                  <b>6. februar</b>
+                </div>
+                <div class="metaRow">
+                  <span class="muted">Zaključavanje rang liste</span>
+                  <b>7 dana prije izvlačenja</b>
+                </div>
+                <div class="metaRow">
+                  <span class="muted">Izvlačenje GLC</span>
+                  <b>15. mart</b>
+                </div>
+              </div>
+              <p class="muted" style="margin: 10px 0 0; font-size: 12px">
+                Klip kampanja je promotivna aktivacija i ne utiče direktno na
+                mehaniku izvlačenja glavne nagrade.
+              </p>
+            </div>
+
+            <div class="miniGrid">
+              <div class="mini">
+                <small>Masovni ulaz</small>
+                <b>250+</b>
+              </div>
+              <div class="mini">
+                <small>Middle tier</small>
+                <b>750+</b>
+              </div>
+              <div class="mini">
+                <small>High</small>
+                <b>1500+</b>
+              </div>
+              <div class="mini">
+                <small>Elite / Legend</small>
+                <b>3000+ / 5000+</b>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- IMAGE STRIP -->
+      <section>
+        <div class="twoCol">
+          <div class="imgBlock">
+            <img
+              alt="GLC visual placeholder"
+              src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1400' height='800'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0' x2='1'%3E%3Cstop offset='0' stop-color='%230A3D91'/%3E%3Cstop offset='1' stop-color='%23072E6D'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='1400' height='800' fill='url(%23bg)'/%3E%3Ccircle cx='360' cy='260' r='260' fill='%23FFD200' opacity='.22'/%3E%3Ccircle cx='1040' cy='520' r='340' fill='%23FFFFFF' opacity='.10'/%3E%3Crect x='120' y='560' width='560' height='96' rx='24' fill='%23ffffff' opacity='.14'/%3E%3Ctext x='150' y='622' fill='%23ffffff' font-family='Arial' font-size='42' opacity='.9'%3EGLC / Lifestyle кадар%3C/text%3E%3C/svg%3E"
+            />
+            <div class="imgCap">
+              Hero/GLC vizual (zamijeni pravom fotografijom ili video frame-om).
+            </div>
+          </div>
+
+          <div class="imgBlock">
+            <img
+              alt="Klip scene placeholder"
+              src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1400' height='800'%3E%3Crect width='1400' height='800' fill='%23F6F9FF'/%3E%3Crect x='110' y='120' width='1180' height='560' rx='32' fill='%23ffffff' stroke='%23E6EBF5'/%3E%3Crect x='170' y='190' width='520' height='360' rx='24' fill='%230A3D91' opacity='.12'/%3E%3Crect x='720' y='190' width='520' height='90' rx='18' fill='%230A3D91' opacity='.10'/%3E%3Crect x='720' y='300' width='420' height='70' rx='18' fill='%230A3D91' opacity='.08'/%3E%3Crect x='720' y='390' width='480' height='70' rx='18' fill='%230A3D91' opacity='.08'/%3E%3Crect x='720' y='480' width='360' height='70' rx='18' fill='%23FFD200' opacity='.22'/%3E%3Ctext x='720' y='235' fill='%235A6B8A' font-family='Arial' font-size='34'%3EKratke scene za edit%3C/text%3E%3C/svg%3E"
+            />
+            <div class="imgCap">
+              Primjer "clean scene" za klipovanje (placeholder).
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- HOW IT WORKS -->
+      <section id="kako">
+        <div class="h2">
+          <h2>Kako radi</h2>
+          <span>3 jasna koraka</span>
+        </div>
+
+        <div class="grid3">
+          <div class="card">
+            <div class="stepNum">1</div>
+            <h3>Klipuj</h3>
+            <p>
+              Preuzmi zvanične materijale i napravi edit/remix (hook + clean
+              kadar radi najbolje).
+            </p>
+          </div>
+          <div class="card">
+            <div class="stepNum">2</div>
+            <h3>Objavi</h3>
+            <p>
+              Objavi na javnom profilu i ispoštuj uslove (logo + tag + hashtag).
+            </p>
+          </div>
+          <div class="card">
+            <div class="stepNum">3</div>
+            <h3>Rangiraj se</h3>
+            <p>
+              Rang unutar tier-a se računa po broju lajkova. Tie-break (po
+              potrebi): komentari.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- RULES -->
+      <section id="pravila">
+        <div class="h2">
+          <h2>Uslovi učešća</h2>
+          <span>samo važeći klipovi ulaze u rang listu</span>
+        </div>
+
+        <ul
+          style="
+            list-style: disc;
+            padding-left: 24px;
+            font-size: 14px;
+            line-height: 1.8;
+            color: var(--text);
+          "
+        >
+          <b
+            ><li>Biti objavljen tokom trajanja kampanje</li>
+            <li>Sadržati AdmiralBet logo</li>
+            <li>Tagovati zvanični profil i koristiti zvanični hashtag</li>
+            <li>Biti sa javnog profila i poštovati pravila platforme</li>
+            <li>Lajkovi = pozicija na rang listi</li>
+            <li>Tie-break (po potrebi): broj komentara</li>
+            <li>Potvrda: insight podaci (reach/likes/engagement)</li></b
+          >
+          <li style="color: var(--muted); font-size: 13px">
+            Nedostavljanje traženih insight podataka u predviđenom roku može
+            rezultirati diskvalifikacijom
+          </li>
+        </ul>
+      </section>
+
+      <!-- TIERS -->
+      <section id="tier">
+        <div class="h2">
+          <h2>Tier sistem</h2>
+          <span>ulazak = minimum · rang = pozicija</span>
+        </div>
+
+        <div class="tiers">
+          <div class="tier">
+            <div class="tierHead">
+              <div class="tierHeadLeft">
+                <span class="badge">TIER 1 — ENTRY</span>
+                <div class="tierInfo">
+                  <div class="tierTitle">250+ lajkova</div>
+                  <div class="tierMeta">Masovni ulaz · bonus/merch</div>
+                </div>
+              </div>
+              <span class="caret">▾</span>
+            </div>
+            <div class="tierContent">
+              <div class="tierLeft">
+                <div class="tierBody">
+                  <ul>
+                    <li>1–5: Sport bonus 30€</li>
+                    <li>6–15: Sport bonus 20€</li>
+                    <li>16–30: Sport bonus 10€</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="tierRight">
+                <img
+                  src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect width='400' height='300' fill='%23F6F9FF'/%3E%3Ctext x='200' y='150' text-anchor='middle' fill='%235A6B8A' font-family='Arial' font-size='20'%3EImage placeholder%3C/text%3E%3C/svg%3E"
+                  alt="Tier 1 image"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="tier">
+            <div class="tierHead">
+              <div class="tierHeadLeft">
+                <span class="badge">TIER 2 — MID</span>
+                <div class="tierInfo">
+                  <div class="tierTitle">750+ lajkova</div>
+                  <div class="tierMeta">Srednji sloj · jače nagrade</div>
+                </div>
+              </div>
+              <span class="caret">▾</span>
+            </div>
+            <div class="tierContent">
+              <div class="tierLeft">
+                <div class="tierBody">
+                  <ul>
+                    <li>1–2: Sport bonus 100€</li>
+                    <li>3–5: Sport bonus 75€</li>
+                    <li>6–10: Sport bonus 50€</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="tierRight">
+                <img
+                  src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect width='400' height='300' fill='%23F6F9FF'/%3E%3Ctext x='200' y='150' text-anchor='middle' fill='%235A6B8A' font-family='Arial' font-size='20'%3EImage placeholder%3C/text%3E%3C/svg%3E"
+                  alt="Tier 2 image"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="tier">
+            <div class="tierHead">
+              <div class="tierHeadLeft">
+                <span class="badge">TIER 3 — HIGH</span>
+                <div class="tierInfo">
+                  <div class="tierTitle">1500+ lajkova</div>
+                  <div class="tierMeta">High engagement · mix nagrada</div>
+                </div>
+              </div>
+              <span class="caret">▾</span>
+            </div>
+            <div class="tierContent">
+              <div class="tierLeft">
+                <div class="tierBody">
+                  <ul>
+                    <li>1: Sport bonus 250€</li>
+                    <li>2–3: Sport bonus 150€</li>
+                    <li>4–6: Pikado kabinet</li>
+                    <li>7–10: Legea set</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="tierRight">
+                <img
+                  src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect width='400' height='300' fill='%23F6F9FF'/%3E%3Ctext x='200' y='150' text-anchor='middle' fill='%235A6B8A' font-family='Arial' font-size='20'%3EImage placeholder%3C/text%3E%3C/svg%3E"
+                  alt="Tier 3 image"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="tier">
+            <div class="tierHead">
+              <div class="tierHeadLeft">
+                <span class="badge">TIER 4 — ELITE</span>
+                <div class="tierInfo">
+                  <div class="tierTitle">3000+ lajkova</div>
+                  <div class="tierMeta">Top tech/experience</div>
+                </div>
+              </div>
+              <span class="caret">▾</span>
+            </div>
+            <div class="tierContent">
+              <div class="tierLeft">
+                <div class="tierBody">
+                  <ul>
+                    <li>1: Sport/slot bonus 500€</li>
+                    <li>2: Apple Watch Ultra</li>
+                    <li>3: JBL BT zvučnik</li>
+                    <li>4–5: Spa za dvoje</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="tierRight">
+                <img
+                  src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect width='400' height='300' fill='%23F6F9FF'/%3E%3Ctext x='200' y='150' text-anchor='middle' fill='%235A6B8A' font-family='Arial' font-size='20'%3EImage placeholder%3C/text%3E%3C/svg%3E"
+                  alt="Tier 4 image"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="tier">
+            <div class="tierHead">
+              <div class="tierHeadLeft">
+                <span class="badge">TIER 5 — LEGEND</span>
+                <div class="tierInfo">
+                  <div class="tierTitle">5000+ lajkova</div>
+                  <div class="tierMeta">
+                    Ambicija (nije obaveza da se popuni)
+                  </div>
+                </div>
+              </div>
+              <span class="caret">▾</span>
+            </div>
+            <div class="tierContent">
+              <div class="tierLeft">
+                <div class="tierBody">
+                  <ul>
+                    <li>1: iPhone 17 Pro / Samsung S25 Ultra</li>
+                    <li>2: PlayStation 5</li>
+                    <li>3: DJI dron</li>
+                    <li>4: Apple set</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="tierRight">
+                <img
+                  src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect width='400' height='300' fill='%23F6F9FF'/%3E%3Ctext x='200' y='150' text-anchor='middle' fill='%235A6B8A' font-family='Arial' font-size='20'%3EImage placeholder%3C/text%3E%3C/svg%3E"
+                  alt="Tier 5 image"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RANKINGS -->
+      <section id="rang">
+        <div class="h2">
+          <h2>Rang lista (GLC)</h2>
+          <span>snapshot + verifikacija</span>
+        </div>
+
+        <div class="card" style="padding: 14px; margin-bottom: 12px">
+          <div class="filters">
+            <span class="pill"
+              ><i></i> Kampanja:
+              <b style="margin-left: 6px; color: var(--blue)">GLC</b></span
+            >
+            <select class="select" id="rankTier">
+              <option value="all">Svi tier-ovi</option>
+              <option value="1">TIER 1 (250+)</option>
+              <option value="2">TIER 2 (750+)</option>
+              <option value="3">TIER 3 (1500+)</option>
+              <option value="4">TIER 4 (3000+)</option>
+              <option value="5">TIER 5 (5000+)</option>
+            </select>
+            <span class="muted" id="rankStamp">Presjek: (unesi datum)</span>
+          </div>
+        </div>
+
+        <table aria-label="Rang lista tabela">
+          <thead>
+            <tr>
+              <th style="width: 80px">#</th>
+              <th>Kreator</th>
+              <th style="width: 140px">Tier</th>
+              <th style="width: 140px">Lajkovi</th>
+            </tr>
+          </thead>
+          <tbody id="rankRows"></tbody>
+        </table>
+
+        <p class="muted" style="margin: 10px 0 0; font-size: 12px">
+          Placeholder tabela. Popuni je iz backoffice-a ili ručno (ili veži na
+          Google Sheet/CSV).
+        </p>
+      </section>
+
+      <!-- MEDIA PACK -->
+      <section id="mediapack">
+        <div class="h2">
+          <h2>Media pack</h2>
+          <span>zvanični materijali za edit</span>
+        </div>
+
+        <div class="mediaBlock">
+          <h3>Preuzmi zvanične materijale</h3>
+          <p>
+            Materijali su dozvoljeni isključivo za ovu kampanju. Korišćenje
+            pack-a je preporučeni način učešća.
+          </p>
+          <button class="btn primary" onclick="openMediaModal()">
+            <span class="dot" aria-hidden="true"></span>
+            Otvori media pack
+          </button>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section id="faq">
+        <div class="h2">
+          <h2>FAQ</h2>
+          <span>kratko i konkretno</span>
+        </div>
+
+        <div class="faq">
+          <details>
+            <summary>
+              Da li mogu objaviti više klipova? <span class="muted">+</span>
+            </summary>
+            <p>
+              Može. Svaki klip mora biti važeći (logo + tag + hashtag + javni
+              profil). Preporuka je da u pravilima precizirate da li se uzima
+              "najbolji klip po kreatoru" ili se svaki klip rangira zasebno.
+            </p>
+          </details>
+
+          <details>
+            <summary>
+              Šta ako obrišem klip? <span class="muted">+</span>
+            </summary>
+            <p>
+              Ako klip nije dostupan u momentu presjeka/verifikacije, ne može
+              biti validiran i može biti diskvalifikovan.
+            </p>
+          </details>
+
+          <details>
+            <summary>
+              Kako se vrši verifikacija? <span class="muted">+</span>
+            </summary>
+            <p>
+              Potencijalni dobitnici dostavljaju insight podatke (reach, likes,
+              engagement) na zahtjev organizatora. Nedostavljanje u predviđenom
+              roku može značiti diskvalifikaciju.
+            </p>
+          </details>
+
+          <details>
+            <summary>
+              Da li klip kampanja utiče na izvlačenje glavne nagrade?
+              <span class="muted">+</span>
+            </summary>
+            <p>
+              Ne. Klip kampanja je promotivna aktivacija i community sloj,
+              odvojen od mehanike izvlačenja glavne nagrade.
+            </p>
+          </details>
+        </div>
+      </section>
+    </main>
+
+    <!-- MODAL -->
+    <div class="modal" id="mediaModal">
+      <div class="modalContent">
+        <div class="modalHeader">
+          <h3>Media pack preuzimanja</h3>
+          <button class="closeBtn" onclick="closeMediaModal()">&times;</button>
+        </div>
+        <div class="modalBody">
+          <p class="muted" style="margin: 0 0 16px; font-size: 13px">
+            Materijali su dozvoljeni isključivo za ovu kampanju.
+          </p>
+          <div class="download">
+            <div class="dl">
+              <div>
+                <b>Video pack (RAW + clean)</b>
+                <small>ZIP · (unesi veličinu)</small>
+              </div>
+              <a
+                class="btn primary"
+                href="#"
+                onclick="fakeDownload(event, 'Video pack')"
+              >
+                <span class="dot" aria-hidden="true"></span> Preuzmi
+              </a>
+            </div>
+
+            <div class="dl">
+              <div>
+                <b>Kadrovi za edit (short scenes)</b>
+                <small>ZIP · (unesi veličinu)</small>
+              </div>
+              <a
+                class="btn primary"
+                href="#"
+                onclick="fakeDownload(event, 'Kadrovi za edit')"
+              >
+                <span class="dot" aria-hidden="true"></span> Preuzmi
+              </a>
+            </div>
+
+            <div class="dl">
+              <div>
+                <b>Logo + vizuali</b>
+                <small>ZIP · (unesi veličinu)</small>
+              </div>
+              <a
+                class="btn primary"
+                href="#"
+                onclick="fakeDownload(event, 'Logo + vizuali')"
+              >
+                <span class="dot" aria-hidden="true"></span> Preuzmi
+              </a>
+            </div>
+
+            <div class="dl">
+              <div>
+                <b>Pravila & FAQ (PDF)</b>
+                <small>PDF · (unesi veličinu)</small>
+              </div>
+              <a
+                class="btn"
+                href="#"
+                onclick="fakeDownload(event, 'Pravila & FAQ')"
+                >Preuzmi</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Accordion for tiers
+      document.querySelectorAll(".tier").forEach((tier) => {
+        tier.querySelector(".tierHead").addEventListener("click", () => {
+          tier.classList.toggle("open");
+        });
+      });
+
+      // Rankings (placeholder demo data; replace with real data)
+      const demoRows = [
+        { rank: 1, name: "kreator_01", tier: 4, likes: 3480 },
+        { rank: 2, name: "kreator_02", tier: 3, likes: 1980 },
+        { rank: 3, name: "kreator_03", tier: 2, likes: 920 },
+        { rank: 4, name: "kreator_04", tier: 1, likes: 540 },
+        { rank: 5, name: "kreator_05", tier: 1, likes: 310 },
+      ];
+
+      const rowsEl = document.getElementById("rankRows");
+      const tierSelect = document.getElementById("rankTier");
+
+      function renderRows() {
+        const t = tierSelect.value;
+        const filtered =
+          t === "all"
+            ? demoRows
+            : demoRows.filter((r) => String(r.tier) === String(t));
+
+        rowsEl.innerHTML = filtered
+          .map(
+            (r) => `
+        <tr>
+          <td class="rank">${r.rank}</td>
+          <td>@${r.name}</td>
+          <td><span class="tierPill">TIER ${r.tier}</span></td>
+          <td class="likes">${r.likes.toLocaleString("sr-RS")}</td>
+        </tr>
+      `,
+          )
+          .join("");
+      }
+
+      tierSelect.addEventListener("change", renderRows);
+      renderRows();
+
+      // Set stamp text
+      document.getElementById("rankStamp").textContent =
+        "Presjek: (unesi datum i vrijeme)";
+
+      // Modal functions
+      function openMediaModal() {
+        document.getElementById("mediaModal").classList.add("active");
+      }
+
+      function closeMediaModal() {
+        document.getElementById("mediaModal").classList.remove("active");
+      }
+
+      // Close modal when clicking outside
+      document
+        .getElementById("mediaModal")
+        .addEventListener("click", function (e) {
+          if (e.target === this) {
+            closeMediaModal();
+          }
+        });
+
+      function fakeDownload(e, what) {
+        e.preventDefault();
+        alert(
+          "Placeholder link: " + what + "\n\nZamijeni href stvarnim URL-om.",
+        );
+      }
+      window.fakeDownload = fakeDownload;
+    </script>
+  </body>
+</html>
